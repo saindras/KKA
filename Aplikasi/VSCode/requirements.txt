@@ -3,4 +3,4 @@ transformers
 accelerate
 streamlit
 hf_xet
-"huggingface_hub[cli]"
+huggingface_hub[cli]
