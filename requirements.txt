@@ -1,0 +1,6 @@
+torch
+transformers
+accelerate
+streamlit
+hf_xet
+"huggingface_hub[cli]"
