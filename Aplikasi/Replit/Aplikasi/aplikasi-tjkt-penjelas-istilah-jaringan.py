@@ -83,10 +83,10 @@ def buat_prompt_istilah(istilah):
 st.subheader("Masukkan Istilah Jaringan atau Telekomunikasi:")
 istilah_input = st.text_input("Contoh: TCP/IP, Router, DNS, Subnetting, OSI Layer, Firewall, Kabel UTP Cat 6")
 
-troubleshoot_button = st.button("Mulai Troubleshooting", type="primary")
+explain_button = st.button("Mulai Penjelasan", type="primary")
 
 # --- Logika Saat Tombol Ditekan ---
-if troubleshoot_button:
+if explain_button:
     # ---- Panggil Inisialisasi Model DI SINI ----
     model_ready = initialize_model()
 
@@ -96,25 +96,25 @@ if troubleshoot_button:
             st.warning("Mohon deskripsikan masalah jaringan terlebih dahulu.")
         else:
             # Buat prompt jika input valid
-            prompt_final_troubleshoot = buat_prompt_istilah(istilah_input)
+            prompt_final_explain = buat_prompt_istilah(istilah_input)
 
-            with st.spinner(f"🛠️ KA sedang menyusun langkah troubleshooting..."):
+            with st.spinner(f"🛠️ KA sedang menyusun penjelasan..."):
                 try:
                     # Kirim ke Gemini (model sudah pasti ada jika model_ready True)
-                    response = model.generate_content(prompt_final_troubleshoot)
+                    response = model.generate_content(prompt_final_explain)
 
                     # Cek safety
                     if response.parts:
-                        jawaban_ai_troubleshoot = response.text
+                        jawaban_ai_explain = response.text
                     else:
                         # ... (penanganan safety tetap sama) ...
-                        jawaban_ai_troubleshoot = "**Permintaan diblokir karena alasan keamanan.**"
+                        jawaban_ai_explain = "**Permintaan diblokir karena alasan keamanan.**"
                         st.warning("Respons AI mungkin diblokir...")
 
                     # Tampilkan hasil
                     st.divider()
-                    st.subheader(f"📋 Langkah Troubleshooting untuk '{istilah_input}':")
-                    st.markdown(jawaban_ai_troubleshoot)
+                    st.subheader(f"📋 Penjelasan untuk '{istilah_input}':")
+                    st.markdown(jawaban_ai_explain)
 
                 except Exception as e:
                     # Tangani error
