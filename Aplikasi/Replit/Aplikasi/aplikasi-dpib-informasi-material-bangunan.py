@@ -106,39 +106,38 @@ cari_info_button = st.button("Cari Informasi Material", type="primary")
 
 # --- Logika Saat Tombol Ditekan ---
 if cari_info_button:
-	model_ready = initialize_model()
-    # Validasi input
-    if not material_input:
-        st.warning("Mohon masukkan nama material terlebih dahulu.")
-    else:
-        # Buat prompt jika input valid
-        prompt_final_material = buat_prompt_material(material_input)
+        model_ready = initialize_model()
+# Validasi input
+if not material_input:
+    st.warning("Mohon masukkan nama material terlebih dahulu.")
+else:
+    # Buat prompt jika input valid
+    prompt_final_material = buat_prompt_material(material_input)
 
-        with st.spinner(f"🤖 KA sedang mencari informasi tentang {material_input}... Mohon tunggu..."):
-            try:
-                # Kirim ke Gemini
-                response = model.generate_content(prompt_final_material)
-                # Cek apakah ada potensi diblokir karena safety
-                if response.parts:
-                    jawaban_ai_material = response.text
-                else:
-                    # Coba akses safety ratings jika ada, atau berikan pesan umum
-                    try:
-                        safety_feedback = response.prompt_feedback
-                        jawaban_ai_material = f"**Permintaan diblokir karena alasan keamanan.**\n\nDetail:\n{safety_feedback}"
-                    except Exception:
-                         jawaban_ai_material = "**Permintaan diblokir karena alasan keamanan.** Tidak ada detail tambahan tersedia."
-                         st.warning("Respons KA mungkin diblokir karena kebijakan keamanan.")
+    with st.spinner(f"🤖 KA sedang mencari informasi tentang {material_input}... Mohon tunggu..."):
+        try:
+            # Kirim ke Gemini
+            response = model.generate_content(prompt_final_material)
+            # Cek apakah ada potensi diblokir karena safety
+            if response.parts:
+                jawaban_ai_material = response.text
+            else:
+                # Coba akses safety ratings jika ada, atau berikan pesan umum
+                try:
+                    safety_feedback = response.prompt_feedback
+                    jawaban_ai_material = f"**Permintaan diblokir karena alasan keamanan.**\n\nDetail:\n{safety_feedback}"
+                except Exception:
+                    jawaban_ai_material = "**Permintaan diblokir karena alasan keamanan.** Tidak ada detail tambahan tersedia."
+                    st.warning("Respons KA mungkin diblokir karena kebijakan keamanan.")
 
-                # Tampilkan hasil
-                st.divider() # Garis pemisah
-                st.subheader(f"📄 Informasi Mengenai {material_input}:")
-                st.markdown(jawaban_ai_material) # Gunakan markdown
-
-            except Exception as e:
-                # Tangani error
-                st.error(f"Terjadi kesalahan saat menghubungi KA: {e}")
-                st.info("Tips: Coba lagi beberapa saat. Pastikan API Key valid dan nama material cukup umum dikenal.")
+            # Tampilkan hasil
+            st.divider() # Garis pemisah
+            st.subheader(f"📄 Informasi Mengenai {material_input}:")
+            st.markdown(jawaban_ai_material) # Gunakan markdown
+        except Exception as e:
+            # Tangani error
+            st.error(f"Terjadi kesalahan saat menghubungi KA: {e}")
+            st.info("Tips: Coba lagi beberapa saat. Pastikan API Key valid dan nama material cukup umum dikenal.")
 
 # --- Footer (Opsional) ---
 st.divider()
