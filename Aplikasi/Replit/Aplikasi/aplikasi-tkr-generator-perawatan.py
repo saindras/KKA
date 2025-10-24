@@ -85,31 +85,31 @@ buat_rekomendasi_button = st.button("Buat Rekomendasi Perawatan", type="primary"
 
 # --- Logika Saat Tombol Ditekan ---
 if buat_rekomendasi_button:
-	model_ready = initialize_model()
-    # Validasi input
-    if not jenis_kendaraan_input:
-        st.warning("Mohon masukkan jenis kendaraan terlebih dahulu.")
-    elif kilometer_input <= 0: # Kilometer harus lebih dari 0 untuk relevan
-        st.warning("Mohon masukkan kilometer tempuh yang valid (lebih dari 0).")
-    else:
-        # Buat prompt jika input valid
-        prompt_final_perawatan = buat_prompt_perawatan(jenis_kendaraan_input, kilometer_input)
+        model_ready = initialize_model()
+# Validasi input
+if not jenis_kendaraan_input:
+    st.warning("Mohon masukkan jenis kendaraan terlebih dahulu.")
+elif kilometer_input <= 0: # Kilometer harus lebih dari 0 untuk relevan
+    st.warning("Mohon masukkan kilometer tempuh yang valid (lebih dari 0).")
+else:
+    # Buat prompt jika input valid
+    prompt_final_perawatan = buat_prompt_perawatan(jenis_kendaraan_input, kilometer_input)
 
-        with st.spinner("🤖 KA sedang menyusun rekomendasi perawatan... Mohon tunggu..."):
-            try:
-                # Kirim ke Gemini
-                response = model.generate_content(prompt_final_perawatan)
-                jawaban_ai_perawatan = response.text
+    with st.spinner("🤖 KA sedang menyusun rekomendasi perawatan... Mohon tunggu..."):
+        try:
+            # Kirim ke Gemini
+            response = model.generate_content(prompt_final_perawatan)
+            jawaban_ai_perawatan = response.text
 
-                # Tampilkan hasil
-                st.divider() # Garis pemisah
-                st.subheader("🔧 Rekomendasi Perawatan Berkala:")
-                st.markdown(jawaban_ai_perawatan) # Gunakan markdown
+            # Tampilkan hasil
+            st.divider() # Garis pemisah
+            st.subheader("🔧 Rekomendasi Perawatan Berkala:")
+            st.markdown(jawaban_ai_perawatan) # Gunakan markdown
 
-            except Exception as e:
-                # Tangani error
-                st.error(f"Terjadi kesalahan saat menghubungi KA: {e}")
-                st.info("Tips: Coba lagi beberapa saat. Pastikan API Key valid dan koneksi internet stabil.")
+        except Exception as e:
+            # Tangani error
+            st.error(f"Terjadi kesalahan saat menghubungi KA: {e}")
+            st.info("Tips: Coba lagi beberapa saat. Pastikan API Key valid dan koneksi internet stabil.")
 
 # --- Footer (Opsional) ---
 st.divider()
