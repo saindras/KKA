@@ -26,6 +26,7 @@ Selalu identifikasi diri Anda sebagai {NAMA_BOT} jika ditanya siapa Anda.
 
 # Inisialisasi model
 model_name = 'models/gemini-2.0-flash-lite'
+# model_name = 'models/gemini-2.5-pro'
 try:
     # Menggunakan system_instruction untuk persona
     model = genai.GenerativeModel(
